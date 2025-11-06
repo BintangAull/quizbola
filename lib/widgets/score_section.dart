@@ -4,12 +4,14 @@ class ScoreSection extends StatelessWidget {
   final int scorePercentage;
   final String statusText;
   final Color progressColor;
+  final String? playerName; // ✅ optional agar bisa tampilkan nama
 
   const ScoreSection({
     super.key,
     required this.scorePercentage,
     required this.statusText,
     required this.progressColor,
+    this.playerName,
   });
 
   @override
@@ -18,7 +20,7 @@ class ScoreSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Skor Kamu: $scorePercentage - $statusText",
+          "${playerName != null ? '$playerName, ' : ''}Skor Kamu: $scorePercentage - $statusText",
           style: TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,

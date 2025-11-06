@@ -9,11 +9,13 @@ import '../utils/score_calculator.dart';
 class ResultPage extends StatefulWidget {
   final int score;
   final List<Question> questions;
+  final String playerName; // ✅ tambahkan nama pemain
 
   const ResultPage({
     super.key,
     required this.score,
     required this.questions,
+    required this.playerName, // wajib diteruskan dari QuizPage
   });
 
   @override
@@ -28,6 +30,7 @@ class _ResultPageState extends State<ResultPage> {
   void initState() {
     super.initState();
     _audioService = AudioService();
+
     _scorePercentage = ScoreCalculator.calculatePercentage(
       widget.score,
       widget.questions.length,
@@ -56,10 +59,12 @@ class _ResultPageState extends State<ResultPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Section skor + nama pemain
             ScoreSection(
               scorePercentage: _scorePercentage,
               statusText: statusText,
               progressColor: progressColor,
+              playerName: widget.playerName, // ✅ tampilkan nama
             ),
             const SizedBox(height: 20),
             const Text(
@@ -70,6 +75,7 @@ class _ResultPageState extends State<ResultPage> {
               ),
             ),
             const SizedBox(height: 10),
+            // List pembahasan per soal
             Expanded(
               child: ListView.builder(
                 itemCount: widget.questions.length,
@@ -79,6 +85,7 @@ class _ResultPageState extends State<ResultPage> {
               ),
             ),
             const SizedBox(height: 20),
+            // Tombol kembali ke HomePage
             const BackButtonSection(),
           ],
         ),

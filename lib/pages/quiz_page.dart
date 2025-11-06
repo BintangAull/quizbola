@@ -7,11 +7,13 @@ import '../widgets/question_card.dart';
 class QuizPage extends StatefulWidget {
   final List<Question> questions;
   final String title;
+  final String playerName; // ✅ nama pemain
 
   const QuizPage({
     super.key,
     required this.questions,
     required this.title,
+    required this.playerName, // ✅ tambahkan playerName
   });
 
   @override
@@ -22,29 +24,35 @@ class _QuizPageState extends State<QuizPage> {
   int currentIndex = 0;
   int? selectedIndex;
 
-  // Hitung score dari questions yang sudah dijawab
+  // Hitung score dari jawaban yang benar
   int get score {
-    return widget.questions.where((q) => q.isCorrect).length;
+    int count = 0;
+    for (var q in widget.questions) {
+      if (q.userAnswerIndex != null && q.userAnswerIndex == q.correctIndex) {
+        count++;
+      }
+    }
+    return count;
   }
 
   void nextQuestion() {
-    // SIMPAN jawaban user ke model SEBELUM pindah soal
+    // SIMPAN jawaban user ke model Question
     widget.questions[currentIndex].userAnswerIndex = selectedIndex;
 
-    // Cek apakah soal terakhir
     if (currentIndex < widget.questions.length - 1) {
       setState(() {
         currentIndex++;
-        selectedIndex = null; // reset pilihan untuk soal berikutnya
+        selectedIndex = null; // reset pilihan
       });
     } else {
-      // Pindah ke result page
+      // Pindah ke ResultPage
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (_) => ResultPage(
             score: score,
             questions: widget.questions,
+            playerName: widget.playerName, // ✅ teruskan nama
           ),
         ),
       );
@@ -63,11 +71,11 @@ class _QuizPageState extends State<QuizPage> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            // Progress indicator
+            // Progress soal
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
               child: Text(
-                "Soal ${currentIndex + 1} dari ${widget.questions.length}",
+                "Halo ${widget.playerName}, Soal ${currentIndex + 1} dari ${widget.questions.length}",
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -75,8 +83,10 @@ class _QuizPageState extends State<QuizPage> {
               ),
             ),
 
+            // Soal card
             QuestionCard(question: question.questionText),
 
+            // Pilihan jawaban
             ...List.generate(
               question.options.length,
                   (i) => AnswerOption(
@@ -92,6 +102,7 @@ class _QuizPageState extends State<QuizPage> {
 
             const Spacer(),
 
+            // Tombol lanjut / lihat hasil
             ElevatedButton(
               onPressed: selectedIndex == null ? null : nextQuestion,
               child: Text(
