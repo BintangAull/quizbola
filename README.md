@@ -1,5 +1,5 @@
 
-- Nama            : Bintang Aulia 
+- Nama            : Bintang Aulia, 231401074, LAB 1
 - Nama Aplikasi   : QuizPool
 - Credit          : https://id.pinterest.com/
 
