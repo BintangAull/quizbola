@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
-import '../data/questions_data.dart';
 import '../widgets/answer_option.dart';
 import '../widgets/question_card.dart';
 
 class QuizPage extends StatefulWidget {
-  const QuizPage({super.key});
+  final List questions;
+  final String title;
+
+  const QuizPage({
+    super.key,
+    required this.questions,
+    required this.title,
+  });
 
   @override
   State<QuizPage> createState() => _QuizPageState();
 }
+
 
 class _QuizPageState extends State<QuizPage> {
   int currentIndex = 0;
@@ -16,11 +23,11 @@ class _QuizPageState extends State<QuizPage> {
   int score = 0;
 
   void nextQuestion() {
-    if (selectedIndex == footballQuestions[currentIndex].correctIndex) {
+    if (selectedIndex == widget.questions[currentIndex].correctIndex) {
       score++;
     }
 
-    if (currentIndex < footballQuestions.length - 1) {
+    if (currentIndex < widget.questions.length - 1) {
       setState(() {
         currentIndex++;
         selectedIndex = null;
@@ -30,7 +37,7 @@ class _QuizPageState extends State<QuizPage> {
         context: context,
         builder: (context) => AlertDialog(
           title: const Text("Kuis Selesai!"),
-          content: Text("Skor kamu: $score dari ${footballQuestions.length}"),
+          content: Text("Skor kamu: $score dari ${widget.questions.length}"),
           actions: [
             TextButton(
               onPressed: () {
@@ -51,11 +58,11 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   Widget build(BuildContext context) {
-    final question = footballQuestions[currentIndex];
+    final question = widget.questions[currentIndex];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Football Quiz"),
+        title: Text(widget.title),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -63,7 +70,6 @@ class _QuizPageState extends State<QuizPage> {
           children: [
             QuestionCard(question: question.questionText),
 
-            // opsi jawaban
             ...List.generate(
               question.options.length,
                   (i) => AnswerOption(
@@ -79,7 +85,6 @@ class _QuizPageState extends State<QuizPage> {
 
             const Spacer(),
 
-            // tombol lanjut
             ElevatedButton(
               onPressed: selectedIndex == null ? null : nextQuestion,
               child: const Text("Lanjut"),

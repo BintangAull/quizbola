@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:quizbola/pages/home_page.dart';
 import 'theme/app_theme.dart';
-import 'pages/quiz_page.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Football Quiz',
       theme: AppTheme.lightTheme,
-      home: const QuizPage(),
+      home: const HomePage(),
     );
   }
 }
