@@ -38,6 +38,7 @@ QuizBola adalah aplikasi kuis interaktif tentang sepak bola, dibuat dengan Flutt
 ---
 
 ## **Struktur Folder**
+```agsl
 lib/
 ├─ main.dart
 ├─ pages/
@@ -57,6 +58,7 @@ lib/
 └─ theme/
 └─ app_theme.dart
 
+```
 
 ---
 
