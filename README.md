@@ -1,7 +1,7 @@
 
-Nama            : Bintang Aulia 
-Nama Aplikasi   : QuizPool
-Credit          : https://id.pinterest.com/
+- Nama            : Bintang Aulia 
+- Nama Aplikasi   : QuizPool
+- Credit          : https://id.pinterest.com/
 
 
 
