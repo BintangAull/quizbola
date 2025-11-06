@@ -33,7 +33,7 @@ class _GreetingTextState extends State<GreetingText> {
         duration: const Duration(milliseconds: 600),
         transform: Matrix4.translationValues(0, offsetY, 0),
         child: const Text(
-          "Selamat Datang di Aplikasi QuizDarto",
+          "Selamat Datang di Aplikasi QuizPool",
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 24,

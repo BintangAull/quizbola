@@ -18,23 +18,27 @@ class QuizPage extends StatefulWidget {
   State<QuizPage> createState() => _QuizPageState();
 }
 
-
 class _QuizPageState extends State<QuizPage> {
   int currentIndex = 0;
   int? selectedIndex;
-  int score = 0;
+
+  // Hitung score dari questions yang sudah dijawab
+  int get score {
+    return widget.questions.where((q) => q.isCorrect).length;
+  }
 
   void nextQuestion() {
-    if (selectedIndex == widget.questions[currentIndex].correctIndex) {
-      score++;
-    }
+    // SIMPAN jawaban user ke model SEBELUM pindah soal
+    widget.questions[currentIndex].userAnswerIndex = selectedIndex;
 
+    // Cek apakah soal terakhir
     if (currentIndex < widget.questions.length - 1) {
       setState(() {
         currentIndex++;
-        selectedIndex = null;
+        selectedIndex = null; // reset pilihan untuk soal berikutnya
       });
     } else {
+      // Pindah ke result page
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -44,14 +48,7 @@ class _QuizPageState extends State<QuizPage> {
           ),
         ),
       );
-
-      // setState(() {
-      //   currentIndex = 0;
-      //   selectedIndex = null;
-      //   score = 0;
-      // });
     }
-
   }
 
   @override
@@ -66,6 +63,18 @@ class _QuizPageState extends State<QuizPage> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
+            // Progress indicator
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Text(
+                "Soal ${currentIndex + 1} dari ${widget.questions.length}",
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+
             QuestionCard(question: question.questionText),
 
             ...List.generate(
@@ -85,7 +94,11 @@ class _QuizPageState extends State<QuizPage> {
 
             ElevatedButton(
               onPressed: selectedIndex == null ? null : nextQuestion,
-              child: const Text("Lanjut"),
+              child: Text(
+                currentIndex == widget.questions.length - 1
+                    ? "Lihat Hasil"
+                    : "Lanjut",
+              ),
             ),
           ],
         ),

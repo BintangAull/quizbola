@@ -51,7 +51,7 @@ class HomePage extends StatelessWidget {
                 color: Colors.blueAccent,
                 delay: 600,
                 onTap: () {
-                  openQuiz(context, politicsQuestions, "Kuis Politik");
+                  openQuiz(context, footballPoliticsQuestions, "Kuis Politik");
                 },
               ),
             ],
