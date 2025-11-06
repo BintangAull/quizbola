@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:quizbola/pages/result_page.dart';
+import '../models/question.dart';
 import '../widgets/answer_option.dart';
 import '../widgets/question_card.dart';
 
 class QuizPage extends StatefulWidget {
-  final List questions;
+  final List<Question> questions;
   final String title;
 
   const QuizPage({
@@ -33,27 +35,23 @@ class _QuizPageState extends State<QuizPage> {
         selectedIndex = null;
       });
     } else {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text("Kuis Selesai!"),
-          content: Text("Skor kamu: $score dari ${widget.questions.length}"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                setState(() {
-                  currentIndex = 0;
-                  score = 0;
-                  selectedIndex = null;
-                });
-              },
-              child: const Text("Main Lagi"),
-            ),
-          ],
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ResultPage(
+            score: score,
+            questions: widget.questions,
+          ),
         ),
       );
+
+      setState(() {
+        currentIndex = 0;
+        selectedIndex = null;
+        score = 0;
+      });
     }
+
   }
 
   @override

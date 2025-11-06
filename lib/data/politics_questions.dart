@@ -10,6 +10,7 @@ final List<Question> politicsQuestions = [
       "Gus Dur",
     ],
     correctIndex: 1,
+    explanation: "bapak kauu "
   ),
   Question(
     questionText: "Negara mana yang memiliki sistem parlementer?",
@@ -20,5 +21,6 @@ final List<Question> politicsQuestions = [
       "China",
     ],
     correctIndex: 2,
+      explanation: "bapak kauu "
   ),
 ];

@@ -10,6 +10,7 @@ final List<Question> footballQuestions = [
       "Luka Modrić",
     ],
     correctIndex: 1,
+      explanation: "bapak kauu "
   ),
   Question(
     questionText: "Klub manakah yang dijuluki The Reds?",
@@ -20,6 +21,7 @@ final List<Question> footballQuestions = [
       "Bayern Munich",
     ],
     correctIndex: 1,
+      explanation: "bapak kauu "
   ),
   Question(
     questionText: "Negara mana juara Piala Dunia 2018?",
@@ -30,5 +32,6 @@ final List<Question> footballQuestions = [
       "Argentina",
     ],
     correctIndex: 2,
+      explanation: "bapak kauu"
   ),
 ];

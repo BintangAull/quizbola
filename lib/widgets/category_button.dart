@@ -5,6 +5,7 @@ class CategoryButton extends StatefulWidget {
   final IconData icon;
   final Color color;
   final VoidCallback onTap;
+  final int delay; // ✅ delay animasi masuk
 
   const CategoryButton({
     super.key,
@@ -12,83 +13,95 @@ class CategoryButton extends StatefulWidget {
     required this.icon,
     required this.color,
     required this.onTap,
+    this.delay = 0,
   });
 
   @override
   State<CategoryButton> createState() => _CategoryButtonState();
 }
 
-class _CategoryButtonState extends State<CategoryButton> {
+class _CategoryButtonState extends State<CategoryButton>
+    with SingleTickerProviderStateMixin {
+
   bool isPressed = false;
+  double opacity = 0;
+  double translateY = 20;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // ✅ animasi masuk fade + slide
+    Future.delayed(Duration(milliseconds: widget.delay), () {
+      setState(() {
+        opacity = 1;
+        translateY = 0;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (_) {
-        setState(() {
-          isPressed = true;
-        });
-      },
-      onTapUp: (_) {
-        setState(() {
-          isPressed = false;
-        });
-        widget.onTap();
-      },
-      onTapCancel: () {
-        setState(() {
-          isPressed = false;
-        });
-      },
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 500),
+      opacity: opacity,
+      curve: Curves.easeOut,
+
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
+        duration: const Duration(milliseconds: 500),
+        transform: Matrix4.translationValues(0, translateY, 0),
         curve: Curves.easeOut,
 
-        // efek animasi scale & shadow
-        transform: Matrix4.identity()
-          ..scale(isPressed ? 0.96 : 1.0),
+        child: GestureDetector(
+          onTapDown: (_) => setState(() => isPressed = true),
+          onTapUp: (_) {
+            setState(() => isPressed = false);
+            widget.onTap();
+          },
+          onTapCancel: () => setState(() => isPressed = false),
 
-        padding: const EdgeInsets.symmetric(vertical: 22, horizontal: 20),
-        margin: const EdgeInsets.symmetric(vertical: 10),
-        width: double.infinity,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 150),
+            curve: Curves.easeOut,
+            transform: Matrix4.identity()
+              ..scale(isPressed ? 0.95 : 1.0),
 
-        decoration: BoxDecoration(
-          color: widget.color.withOpacity(0.09),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: widget.color, width: 2),
+            padding: const EdgeInsets.symmetric(vertical: 22, horizontal: 20),
+            margin: const EdgeInsets.symmetric(vertical: 12),
+            width: double.infinity,
 
-          // glow shadow saat ditekan
-          boxShadow: isPressed
-              ? [
-            BoxShadow(
-              color: widget.color.withOpacity(0.4),
-              blurRadius: 20,
-              spreadRadius: 1,
-              offset: const Offset(0, 8),
-            )
-          ]
-              : [
-            BoxShadow(
-              color: widget.color.withOpacity(0.15),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            )
-          ],
-        ),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.25),  // ✅ dark overlay effect
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: widget.color, width: 2),
 
-        child: Row(
-          children: [
-            Icon(widget.icon, size: 32, color: widget.color),
-            const SizedBox(width: 20),
-            Text(
-              widget.title,
-              style: TextStyle(
-                color: widget.color,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
+              // ✅ NEON GLOW EFFECT
+              boxShadow: [
+                BoxShadow(
+                  color: widget.color.withOpacity(isPressed ? 0.8 : 0.5),
+                  blurRadius: isPressed ? 25 : 15,
+                  spreadRadius: isPressed ? 3 : 1,
+                  offset: const Offset(0, 0),
+                ),
+              ],
             ),
-          ],
+
+            child: Row(
+              children: [
+                Icon(widget.icon, size: 32, color: widget.color),
+                const SizedBox(width: 20),
+                Text(
+                  widget.title,
+                  style: TextStyle(
+                    color: widget.color,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+
+          ),
         ),
       ),
     );
