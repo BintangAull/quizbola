@@ -33,11 +33,8 @@ class HomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
               const GreetingText(),   // ✅ greeting animasi dipisah
-
               const SizedBox(height: 50),
-
               CategoryButton(
                 title: "Kuis Sepak Bola",
                 icon: Icons.sports_soccer,

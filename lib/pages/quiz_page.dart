@@ -45,11 +45,11 @@ class _QuizPageState extends State<QuizPage> {
         ),
       );
 
-      setState(() {
-        currentIndex = 0;
-        selectedIndex = null;
-        score = 0;
-      });
+      // setState(() {
+      //   currentIndex = 0;
+      //   selectedIndex = null;
+      //   score = 0;
+      // });
     }
 
   }

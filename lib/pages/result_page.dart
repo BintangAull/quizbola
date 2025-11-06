@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/question.dart';
-import '../widgets/result_card.dart'; // import widget baru
+import '../widgets/result_card.dart';
 
 class ResultPage extends StatelessWidget {
   final int score;
@@ -14,6 +14,11 @@ class ResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final int totalScorePercent = ((score / questions.length) * 100).round();
+    final bool isGood = totalScorePercent >= 75;
+    final String statusText = isGood ? "mahal king" : "Goblog";
+    final Color progressColor = isGood ? Colors.green : Colors.red;
+
     return Scaffold(
       appBar: AppBar(title: const Text("Hasil Kuis")),
       body: Padding(
@@ -22,11 +27,19 @@ class ResultPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Skor Kamu: $score dari ${questions.length}",
-              style: const TextStyle(
-                fontSize: 24,
+              "Skor Kamu: $totalScorePercent - $statusText",
+              style: TextStyle(
+                fontSize: 28,
                 fontWeight: FontWeight.bold,
+                color: progressColor,
               ),
+            ),
+            const SizedBox(height: 10),
+            LinearProgressIndicator(
+              value: totalScorePercent / 100,
+              minHeight: 12,
+              backgroundColor: Colors.grey.shade300,
+              color: progressColor,
             ),
             const SizedBox(height: 20),
             const Text(
